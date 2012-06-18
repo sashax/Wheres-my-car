@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, WheresmycarActivity!</string>
+    <string name="app_name">Wheresmycar</string>
+    <string name="splash_name">Where is my Car?</string>
+	<string name="park_here">Park Here</string>
+	<string name="finding_loc_msg">Getting current location</string>
+	<string name="retrieve_name">Retrieve Car</string>
+	<string name="park_label">Park my Car</string>
+	<string name="find_label">Where\'s my car?</string>
+	<string name="forget_label">I\'ve moved my car</string>
+	<string name="clear_label">OK, got it</string>
+</resources>

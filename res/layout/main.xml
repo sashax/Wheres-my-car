@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/park_car_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/park_label" 
+        android:onClick="onButtonClick"
+        
+        />
+
+    <Button
+        android:id="@+id/where_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/find_label"         
+        android:onClick="onButtonClick"
+        />
+
+    <Button 
+        android:id="@+id/forget_btn"
+         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/forget_label"         
+        android:onClick="onButtonClick"
+        />
+</LinearLayout>
