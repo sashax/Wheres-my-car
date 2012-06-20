@@ -51,11 +51,12 @@ public class WheresmycarActivity extends MapActivity {
 	protected MapView mapView;
 	protected MapController mc;
 	protected GeoPoint myPoint = null;
-	protected Spinner daySpinner;
+	protected Spinner daySpinner, hourSpinner, halfSpinner, minuteSpinner;
 	protected Button saveButton;
 	protected int cleaningDay = -1;
 	protected int cleaningHour = -1;
 	protected int cleaningMinute = -1;
+	protected int cleaningHalf = 1;
 	protected int intLng, intLat;
 	private SharedPreferences mPrefs;
 	private GeocodeTask geotask;
@@ -98,19 +99,68 @@ public class WheresmycarActivity extends MapActivity {
          mc.animateTo(myPoint);
          
          //initialize day chooser
-         daySpinner = (Spinner)findViewById(R.id.dayspinner);
+         daySpinner = (Spinner)findViewById(R.id.dayspin);
          ArrayAdapter adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.days, android.R.layout.simple_spinner_item);
          adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
          daySpinner.setAdapter(adapter);
          daySpinner.setOnItemSelectedListener(new DaySpinnerSelectedListener());
          
-         //timepicker
-         TimePicker timepicker = (TimePicker)findViewById(R.id.timePicker1);
-         timepicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-				setCleaningTime(hourOfDay, minute);
+         //hour chooser
+         hourSpinner = (Spinner)findViewById(R.id.hourspinner);
+         Integer[] hours = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}; 
+         ArrayAdapter<Integer> timeAdapter = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, hours);
+         timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+         hourSpinner.setAdapter(timeAdapter);
+         hourSpinner.setOnItemSelectedListener( new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> arg0, View v, int pos, long id) {
+				cleaningHour = pos + 1;
+				setCleaningTime();
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
+					//nothing			
 			}
          });
+              
+         //minute chooser
+         minuteSpinner = (Spinner)findViewById(R.id.minspin);
+         ArrayAdapter adapter2 = ArrayAdapter.createFromResource(getApplicationContext(), R.array.minutes, android.R.layout.simple_spinner_item);
+         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+         minuteSpinner.setAdapter(adapter2);
+         minuteSpinner.setOnItemSelectedListener( new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> arg0, View v, int pos, long id) {
+				cleaningMinute = pos * 15;
+				setCleaningTime();
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
+					//nothing			
+			}
+         });
+          
+         //am/pm chooser
+         halfSpinner = (Spinner)findViewById(R.id.halfspinner);
+         adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.halfs, android.R.layout.simple_spinner_item);
+         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+         halfSpinner.setAdapter(adapter);
+         halfSpinner.setOnItemSelectedListener( new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> arg0, View v, int pos, long id) {
+				cleaningHalf = pos;
+				setCleaningTime();
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
+					//nothing			
+			}
+         });
+         
+//         //timepicker
+//         TimePicker timepicker = (TimePicker)findViewById(R.id.timePicker1);
+//         timepicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+//			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+//				setCleaningTime(hourOfDay, minute);
+//			}
+//         });
          
          //savebutton
          saveButton = (Button)findViewById(R.id.savebutton);
@@ -153,9 +203,8 @@ public class WheresmycarActivity extends MapActivity {
 	}
 	
 	//save time part of streetcleaning time
-	public void setCleaningTime(int hourOfDay, int minute) {
-		cleaningHour = hourOfDay;
-		cleaningMinute = minute;
+	public void setCleaningTime() {
+		
 		checkSaveEnable();
 	}
 	
@@ -169,10 +218,12 @@ public class WheresmycarActivity extends MapActivity {
 
 	protected void getNextCleaningTime() {
 		if (address != null && saveButton.isEnabled()) {
-			//figure out time and day for nesxt cleanign.
+			//figure out time and day for next cleaning.
 			cal = new GregorianCalendar();
 			int today = cal.get(Calendar.DAY_OF_WEEK);
 			int delta = cleaningDay - today;
+			//adjust for AM/PM
+			cleaningHour += 12 * (cleaningHalf);
 			if (delta < 0) {
 				cal.add(Calendar.DAY_OF_YEAR, 7 + delta);
 			} else if (delta > 0) {

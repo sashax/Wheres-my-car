@@ -5,55 +5,68 @@
     android:layout_height="fill_parent"
     android:gravity="center"
     android:orientation="vertical" >
-     <com.google.android.maps.MapView
+    <com.google.android.maps.MapView
         android:id="@+id/mapview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight=".8"
         android:apiKey="0D8I9GO4apaUOc9rIdP7JadJqQROqo5bry3Et6w"
         />
-    <LinearLayout
-        android:id="@+id/buttonholder"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:gravity="center"
-        >
-    <Button
-        android:id="@+id/parkButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/park_here" 
-        android:onClick="onButtonClick"
-        />
-
-    <Spinner
-        android:id="@+id/dayspinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-
-    </LinearLayout>
+     <Spinner
+	        android:id="@+id/dayspin"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:gravity="left"
+	        />
     <LinearLayout
         android:id="@+id/pickerholder"
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-         android:layout_weight=".2">
-
-        <TimePicker
+        android:layout_height="wrap_content">
+	   
+        <!-- 
+     <TimePicker
             android:id="@+id/timePicker1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
+ -->
+	 	<Spinner
+	 	    android:id="@+id/hourspinner"
+	 	    android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        />
+	 	<Spinner
+	 	    android:id="@+id/minspin"
+	 	    android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        />
+	 	<Spinner
+	 	    android:id="@+id/halfspinner"
+	 	    android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/savebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:state_enabled="false"
-        android:gravity="center_horizontal"
-        android:text="@string/park_label" 
-        android:onClick="onButtonClick"
-        />
-
+	<LinearLayout
+        android:id="@+id/buttonholder"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal"
+        android:gravity="center">
+		<Button
+	        android:id="@+id/parkButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/park_here" 
+	        android:onClick="onButtonClick"
+	        />
+    	<Button
+	        android:id="@+id/savebutton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:state_enabled="false"
+	        android:gravity="center_horizontal"
+	        android:text="@string/park_label" 
+	        android:onClick="onButtonClick"
+	        />
+	</LinearLayout>
 </LinearLayout>

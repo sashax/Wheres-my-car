@@ -3,32 +3,49 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
-    <Button
+    <ImageButton
         android:id="@+id/park_car_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/park_label" 
+        android:src="@drawable/wmc_park_icon" 
         android:onClick="onButtonClick"
-        
-        />
-
-    <Button
+        android:layout_marginTop="25dip"/>
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/park_label"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <ImageButton
         android:id="@+id/where_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/find_label"         
+        android:src="@drawable/wmc_icon" 
         android:onClick="onButtonClick"
-        />
-
-    <Button 
-        android:id="@+id/forget_btn"
-         android:layout_width="wrap_content"
+        android:layout_marginTop="25dip"/>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/forget_label"         
+        android:text="@string/find_label"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <ImageButton
+        android:id="@+id/forget_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/wmc_nopark_icon" 
         android:onClick="onButtonClick"
-        />
+        android:layout_marginTop="25dip"/>
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/forget_label"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 </LinearLayout>
