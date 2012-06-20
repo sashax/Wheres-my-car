@@ -3,7 +3,6 @@
  */
 package com.ssasha.parking;
 
-import java.util.HashMap;
 import java.util.List;
 
 import com.google.android.maps.GeoPoint;
@@ -12,12 +11,14 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * @author smagee
@@ -42,7 +43,7 @@ public class RetrieveActivity extends MapActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.retrieve);
         //get info from intent if it exists (from alert)
-        Intent intent = getIntent();
+//        Intent intent = getIntent();
 //        if (intent != null && false) {
 //	        appLat = (int)(intent.getDoubleExtra(IParkingConstants.LAT, 0.0) * 1000000);
 //	        appLng = (int)(intent.getDoubleExtra(IParkingConstants.LNG, 0.0) * 1000000);
@@ -101,11 +102,14 @@ public class RetrieveActivity extends MapActivity {
     		if (prefs == null)
     			prefs = new PrefsEditor();
     		prefs.clearPrefs(this);
+    		//clear alarm
+    		Intent intent = new Intent(this, ReminderReceiver.class);
+    		AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+    		PendingIntent pi = PendingIntent.getBroadcast(this, 1, intent, 0);
+    		am.cancel(pi);
+        	Toast.makeText(getApplicationContext(), "Car Reminder Cleared", Toast.LENGTH_SHORT).show();
     		break;
     	}
     }
-    
-
-
 	
 }

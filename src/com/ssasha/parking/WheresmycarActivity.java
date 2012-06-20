@@ -100,7 +100,7 @@ public class WheresmycarActivity extends MapActivity {
          
          //initialize day chooser
          daySpinner = (Spinner)findViewById(R.id.dayspin);
-         ArrayAdapter adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.days, android.R.layout.simple_spinner_item);
+         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.days, android.R.layout.simple_spinner_item);
          adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
          daySpinner.setAdapter(adapter);
          daySpinner.setOnItemSelectedListener(new DaySpinnerSelectedListener());
@@ -124,9 +124,9 @@ public class WheresmycarActivity extends MapActivity {
               
          //minute chooser
          minuteSpinner = (Spinner)findViewById(R.id.minspin);
-         ArrayAdapter adapter2 = ArrayAdapter.createFromResource(getApplicationContext(), R.array.minutes, android.R.layout.simple_spinner_item);
-         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-         minuteSpinner.setAdapter(adapter2);
+         adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.minutes, android.R.layout.simple_spinner_item);
+         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+         minuteSpinner.setAdapter(adapter);
          minuteSpinner.setOnItemSelectedListener( new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> arg0, View v, int pos, long id) {
 				cleaningMinute = pos * 15;
@@ -217,7 +217,7 @@ public class WheresmycarActivity extends MapActivity {
 	}
 
 	protected void getNextCleaningTime() {
-		if (address != null && saveButton.isEnabled()) {
+		if (saveButton.isEnabled()) {
 			//figure out time and day for next cleaning.
 			cal = new GregorianCalendar();
 			int today = cal.get(Calendar.DAY_OF_WEEK);
@@ -248,7 +248,8 @@ public class WheresmycarActivity extends MapActivity {
 			am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
 			//write info to prefs (note that we're only dealing with one car at a time here. TODO
 			writePrefs(intLat, intLng, cal.getTimeInMillis(), address);
-			System.out.println("address: " + address + " " + intLat + " " + intLng);
+			String confirmation = "move your car at " + address + " by " + cal.getTime();
+			Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -351,47 +352,35 @@ public class WheresmycarActivity extends MapActivity {
 		mc.animateTo(myPoint);
 	}
 	
-	//does the geocoding of lat/lng to get street address.
+	//does the (reverse) geocoding of lat/lng to get street address.
 	private class GeocodeTask extends AsyncTask<Double, Integer, String> {
-		
 		@Override
 		protected String doInBackground(Double... params) {
-			 StringBuffer input = new StringBuffer();
-			 String locAddress = new String();
-
-				String urlString = "http://maps.googleapis.com/maps/api/geocode/xml?latlng=" + Double.toString(params[0])+"," 
-						+ Double.toString(params[1])+"&sensor=true";
-				try {
-					URL geocode = new URL(urlString);
-			        URLConnection geocon = geocode.openConnection();
-			        BufferedReader in = new BufferedReader(
-			                                new InputStreamReader(
-			                                geocon.getInputStream()));
-			        String line;
-			        
-			        while ((line = in.readLine()) != null) 
-			            input.append(line);
-			        in.close();
-			        
-				} catch (Exception e) {
-					//fail somewhat gracefully
-					e.printStackTrace();
-					locAddress = "Unknown address";
-				}
-				String xmlString = input.toString();
-				locAddress = getStreetAddress(xmlString);
-				address = locAddress;
-				Log.d(TAG, "Task address: " + address);
-				getNextCleaningTime();
-				return locAddress;
+			StringBuffer input = new StringBuffer();
+			String locAddress = new String();
+			String urlString = "http://maps.googleapis.com/maps/api/geocode/xml?latlng=" + Double.toString(params[0])+"," 
+					+ Double.toString(params[1])+"&sensor=true";
+			try {
+				URL geocode = new URL(urlString);
+		        URLConnection geocon = geocode.openConnection();
+		        BufferedReader in = new BufferedReader(
+		                                new InputStreamReader(
+		                                geocon.getInputStream()));
+		        String line;
+		        while ((line = in.readLine()) != null) 
+		            input.append(line);
+		        in.close();
+			} catch (Exception e) {
+				//fail somewhat gracefully
+				e.printStackTrace();
+				locAddress = "Unknown address";
+			}
+			String xmlString = input.toString();
+			locAddress = getStreetAddress(xmlString);
+			address = locAddress;
+			Log.d(TAG, "Task address: " + address);
+			return locAddress;
 		}
-		
-		@Override
-		protected void onPostExecute(String result) {
-	//		writePrefs(intLat, intLng, cal.getTimeInMillis(), address);
-		}
-
-		
 	}
 	
 	//handles selection on day spinner

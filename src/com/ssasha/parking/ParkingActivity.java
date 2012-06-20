@@ -1,12 +1,18 @@
 package com.ssasha.parking;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 public class ParkingActivity extends Activity {
+	
+	protected PrefsEditor prefs;
 
 	/** Called when the activity is first created. */
     @Override
@@ -36,9 +42,14 @@ public class ParkingActivity extends Activity {
     //forget location of car and cleaning time
     //prefs stuff should be factored out
     private void clearPrefs() {
-    	SharedPreferences mPrefs = getSharedPreferences(IParkingConstants.PREFS, MODE_WORLD_READABLE);
-    	SharedPreferences.Editor editor = mPrefs.edit();
-    	editor.clear();
-    	editor.commit();
+    	if (prefs == null)
+    		prefs = new PrefsEditor();
+    	prefs.clearPrefs(this);
+    	//clear alarm
+		Intent intent = new Intent(this, ReminderReceiver.class);
+		AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+		PendingIntent pi = PendingIntent.getBroadcast(this, 1, intent, 0);
+		am.cancel(pi);
+    	Toast.makeText(getApplicationContext(), "Car Reminder Cleared", Toast.LENGTH_SHORT).show();
     }
 }
