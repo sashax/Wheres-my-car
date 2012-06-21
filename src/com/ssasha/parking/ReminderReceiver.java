@@ -41,7 +41,7 @@ public class ReminderReceiver extends BroadcastReceiver {
 		String ns = Context.NOTIFICATION_SERVICE;
 		NotificationManager nm =  
 		            (NotificationManager)context.getSystemService(ns);
-		int icon = R.drawable.wmc_icon;
+		int icon = R.drawable.ic_note;
 		CharSequence tickerText = "Street Cleaning";
 		long when = System.currentTimeMillis();
 		Notification notification = new Notification(icon, tickerText, when);
