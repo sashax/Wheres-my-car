@@ -292,10 +292,13 @@ public class WheresmycarActivity extends MapActivity {
 	}
 	
 	private void writePrefs() {
-		if (prefs == null)
-			prefs = new PrefsEditor();
-		prefs.write(this, intLat, intLng, address, cal.getTimeInMillis());
-		Log.d(TAG, "writing prefs: " + intLat +", "+intLng+", " + address);
+		//need to make sure cal has been initialized
+		if (cal != null) {
+			if (prefs == null)
+				prefs = new PrefsEditor();
+			prefs.write(this, intLat, intLng, address, cal.getTimeInMillis());
+			Log.d(TAG, "writing prefs: " + intLat +", "+intLng+", " + address);
+		}
 	}
 	
 	//handle results from GPS

@@ -8,8 +8,8 @@
     <com.google.android.maps.MapView
         android:id="@+id/mapview"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight=".8"
+        android:layout_height="0dp"
+        android:layout_weight=".1"
         android:apiKey="0D8I9GO4apaUOc9rIdP7JadJqQROqo5bry3Et6w"
         />
      <Spinner
