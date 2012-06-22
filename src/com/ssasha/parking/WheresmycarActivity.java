@@ -62,6 +62,7 @@ public class WheresmycarActivity extends MapActivity {
 	private GeocodeTask geotask;
 	private String address;
 	protected GregorianCalendar cal;
+	protected PrefsEditor prefs;
 
 	
     /** Called when the activity is first created. */
@@ -95,23 +96,23 @@ public class WheresmycarActivity extends MapActivity {
         List<Overlay> list = mapView.getOverlays();
         list.add(myLocationOverlay);
         
-         //show location
-         mc.animateTo(myPoint);
+        //show location
+        mc.animateTo(myPoint);
          
-         //initialize day chooser
-         daySpinner = (Spinner)findViewById(R.id.dayspin);
-         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.days, android.R.layout.simple_spinner_item);
-         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-         daySpinner.setAdapter(adapter);
-         daySpinner.setOnItemSelectedListener(new DaySpinnerSelectedListener());
+        //initialize day chooser
+        daySpinner = (Spinner)findViewById(R.id.dayspin);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.days, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        daySpinner.setAdapter(adapter);
+        daySpinner.setOnItemSelectedListener(new DaySpinnerSelectedListener());
          
-         //hour chooser
-         hourSpinner = (Spinner)findViewById(R.id.hourspinner);
-         Integer[] hours = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}; 
-         ArrayAdapter<Integer> timeAdapter = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, hours);
-         timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-         hourSpinner.setAdapter(timeAdapter);
-         hourSpinner.setOnItemSelectedListener( new OnItemSelectedListener() {
+        //hour chooser
+        hourSpinner = (Spinner)findViewById(R.id.hourspinner);
+        Integer[] hours = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}; 
+        ArrayAdapter<Integer> timeAdapter = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, hours);
+        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        hourSpinner.setAdapter(timeAdapter);
+        hourSpinner.setOnItemSelectedListener( new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> arg0, View v, int pos, long id) {
 				cleaningHour = pos + 1;
 				setCleaningTime();
@@ -169,9 +170,6 @@ public class WheresmycarActivity extends MapActivity {
     //button click handler
     public void onButtonClick(View view) {
     	switch (view.getId()) {
-    	case R.id.parkButton :
-    		Toast.makeText(getApplicationContext(), R.string.finding_loc_msg, Toast.LENGTH_SHORT).show();
-    		break;
     	case R.id.savebutton :
     		getNextCleaningTime();
     		break;
@@ -247,7 +245,7 @@ public class WheresmycarActivity extends MapActivity {
 			PendingIntent pi = PendingIntent.getBroadcast(this, 1, intent, 0);
 			am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
 			//write info to prefs (note that we're only dealing with one car at a time here. TODO
-			writePrefs(intLat, intLng, cal.getTimeInMillis(), address);
+			writePrefs();
 			String confirmation = "move your car at " + address + " by " + cal.getTime();
 			Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_SHORT).show();
 		}
@@ -293,17 +291,11 @@ public class WheresmycarActivity extends MapActivity {
 		return address;
 	}
 	
-	private void writePrefs(int lat, int lng, long millis, String address) {
-		if (mPrefs == null) {
-			mPrefs = getSharedPreferences(IParkingConstants.PREFS, MODE_WORLD_READABLE);
-		}
-		SharedPreferences.Editor editor = mPrefs.edit();
-		editor.putInt(IParkingConstants.LAT, lat);
-		editor.putInt(IParkingConstants.LNG, lng);
-		editor.putLong(IParkingConstants.MILLIS, millis);
-		editor.putString(IParkingConstants.ADDRESS, address);
-		editor.commit();
-		Log.d(TAG, "writing prefs: " + lat +", "+lng+", " + address);
+	private void writePrefs() {
+		if (prefs == null)
+			prefs = new PrefsEditor();
+		prefs.write(this, intLat, intLng, address, cal.getTimeInMillis());
+		Log.d(TAG, "writing prefs: " + intLat +", "+intLng+", " + address);
 	}
 	
 	//handle results from GPS
@@ -379,6 +371,7 @@ public class WheresmycarActivity extends MapActivity {
 			locAddress = getStreetAddress(xmlString);
 			address = locAddress;
 			Log.d(TAG, "Task address: " + address);
+			writePrefs();
 			return locAddress;
 		}
 	}

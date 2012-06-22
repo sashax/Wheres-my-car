@@ -3,6 +3,7 @@
  */
 package com.ssasha.parking;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.google.android.maps.GeoPoint;
@@ -42,16 +43,9 @@ public class RetrieveActivity extends MapActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.retrieve);
-        //get info from intent if it exists (from alert)
-//        Intent intent = getIntent();
-//        if (intent != null && false) {
-//	        appLat = (int)(intent.getDoubleExtra(IParkingConstants.LAT, 0.0) * 1000000);
-//	        appLng = (int)(intent.getDoubleExtra(IParkingConstants.LNG, 0.0) * 1000000);
-//	        address = intent.getStringExtra(IParkingConstants.ADDRESS);
-//        } else { //or get info from prefs (if we came here manually)
-        	readPrefs();
-//        }
-      //initialize mapview
+        // get info from prefs     	
+        readPrefs();
+        //initialize mapview
         mapView = (MapView)findViewById(R.id.mapview);
         //show zoom in/out buttons
         mapView.setBuiltInZoomControls(true);
@@ -65,16 +59,19 @@ public class RetrieveActivity extends MapActivity {
         //textview 
         textview = (TextView)findViewById(R.id.address_display);
         textview.setText(address);
+        
+        TextView timeview = (TextView)findViewById(R.id.time_display);
+        timeview.setText("Car needs to be moved by " + new SimpleDateFormat().format(time).toString());
 
-      //Get the current location in start-up
+        //Get the current location in start-up
         myPoint = new GeoPoint(appLat,appLng);
         
         LocOverlay myLocationOverlay = new LocOverlay(myPoint);
         List<Overlay> list = mapView.getOverlays();
         list.add(myLocationOverlay);
         
-         //show location
-         mc.animateTo(myPoint);
+        //show location
+        mc.animateTo(myPoint);
     }
     
     //read prefs and get relevant values

@@ -52,13 +52,6 @@
         android:layout_height="wrap_content" 
         android:orientation="horizontal"
         android:gravity="center">
-		<Button
-	        android:id="@+id/parkButton"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/park_here" 
-	        android:onClick="onButtonClick"
-	        />
     	<Button
 	        android:id="@+id/savebutton"
 	        android:layout_width="wrap_content"
