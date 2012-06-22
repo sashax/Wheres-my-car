@@ -27,7 +27,7 @@ import android.widget.Toast;
  */
 public class RetrieveActivity extends MapActivity {
 
-	private static String TAG="com.ssasha.parking.RetrieveActivity";
+//	private static String TAG="com.ssasha.parking.RetrieveActivity";
 	
 	protected int appLat, appLng;
 	protected long time;

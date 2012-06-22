@@ -27,7 +27,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -41,7 +40,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class WheresmycarActivity extends MapActivity {
@@ -58,7 +56,6 @@ public class WheresmycarActivity extends MapActivity {
 	protected int cleaningMinute = -1;
 	protected int cleaningHalf = 1;
 	protected int intLng, intLat;
-	private SharedPreferences mPrefs;
 	private GeocodeTask geotask;
 	private String address;
 	protected GregorianCalendar cal;
