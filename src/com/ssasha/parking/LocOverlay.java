@@ -11,7 +11,7 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
 public class LocOverlay extends Overlay {
-	protected GeoPoint myPoint;
+	private GeoPoint myPoint;
 	public LocOverlay(GeoPoint gpoint) {
 		myPoint = gpoint;
 	}

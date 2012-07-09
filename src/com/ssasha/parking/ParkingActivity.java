@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 public class ParkingActivity extends Activity {
 	
-	protected PrefsEditor prefs;
+	private PrefsEditor prefs;
 
 	/** Called when the activity is first created. */
     @Override

@@ -29,14 +29,15 @@ public class RetrieveActivity extends MapActivity {
 
 //	private static String TAG="com.ssasha.parking.RetrieveActivity";
 	
-	protected int appLat, appLng;
-	protected long time;
-	protected String address;
-	protected GeoPoint myPoint;
-	protected MapView mapView;
-	protected MapController mc;
-	protected TextView textview;
-	protected PrefsEditor prefs;
+	private int appLat, appLng;
+	private long time;
+	private String address;
+	private GeoPoint myPoint;
+	private MapView mapView;
+	private MapController mc;
+	private TextView addressText;
+	private TextView timeText;
+	private PrefsEditor prefs;
 	
     /** Called when the activity is first created. */
     @Override
@@ -56,13 +57,15 @@ public class RetrieveActivity extends MapActivity {
         // Zoom Level
         mc.setZoom(18); 
         
-        //textview 
-        textview = (TextView)findViewById(R.id.address_display);
-        textview.setText(address);
+         
+        addressText = (TextView)findViewById(R.id.address_display);
+        addressText.setText(address);
         
-        TextView timeview = (TextView)findViewById(R.id.time_display);
-        timeview.setText("Car needs to be moved by " + new SimpleDateFormat().format(time).toString());
-
+        timeText = (TextView)findViewById(R.id.time_display);
+        if (time != 0.0)
+        	timeText.setText("Car needs to be moved by " + new SimpleDateFormat().format(time).toString());
+        else
+        	timeText.setText("We do not know when your car needs to be moved");
         //Get the current location in start-up
         myPoint = new GeoPoint(appLat,appLng);
         
@@ -105,6 +108,8 @@ public class RetrieveActivity extends MapActivity {
     		PendingIntent pi = PendingIntent.getBroadcast(this, 1, intent, 0);
     		am.cancel(pi);
         	Toast.makeText(getApplicationContext(), "Car Reminder Cleared", Toast.LENGTH_SHORT).show();
+        	addressText.setText("");
+        	timeText.setText("Your car has been moved");
     		break;
     	}
     }

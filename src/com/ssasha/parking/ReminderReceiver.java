@@ -19,7 +19,7 @@ public class ReminderReceiver extends BroadcastReceiver {
 
 	private static String TAG="BroadcastReceiver";
 	
-	private String address = new String();
+	private String address;
 	private double lat, lng;
 
 	/* (non-Javadoc)
@@ -33,11 +33,11 @@ public class ReminderReceiver extends BroadcastReceiver {
 				+ ", " + lng;
 		Log.i(TAG,s);
 
-		address = intent.getStringExtra(IParkingConstants.ADDRESS);
-		 this.sendNotification(context, intent); 
+ 		address = intent.getStringExtra(IParkingConstants.ADDRESS);
+		this.sendNotification(context, intent); 
 	}
 	
-	protected void sendNotification(Context context, Intent intent) {
+	private void sendNotification(Context context, Intent intent) {
 		String ns = Context.NOTIFICATION_SERVICE;
 		NotificationManager nm =  
 		            (NotificationManager)context.getSystemService(ns);
@@ -52,6 +52,8 @@ public class ReminderReceiver extends BroadcastReceiver {
 		Intent intent2 = new Intent("com.ssasha.parking.intent.retrieve");
 		intent2.putExtras(intent);
 		PendingIntent pi= PendingIntent.getActivity(context, 0, intent2, 0);
+		if (address == null)
+	 		address = intent.getStringExtra(IParkingConstants.ADDRESS);
 		notification.setLatestEventInfo(context, tickerText, "Car near " + address 
 				+ " needs to be moved", pi);
 		

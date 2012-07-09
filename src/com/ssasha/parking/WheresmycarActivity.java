@@ -46,20 +46,20 @@ public class WheresmycarActivity extends MapActivity {
 	public static String TAG = "com.ssasha.parking.WheresmycarActivity";
 	private LocationManager locationManager;
 	public Location myLocation;
-	protected MapView mapView;
-	protected MapController mc;
-	protected GeoPoint myPoint = null;
-	protected Spinner daySpinner, hourSpinner, halfSpinner, minuteSpinner;
-	protected Button saveButton;
-	protected int cleaningDay = -1;
-	protected int cleaningHour = -1;
-	protected int cleaningMinute = -1;
-	protected int cleaningHalf = 1;
-	protected int intLng, intLat;
+	private MapView mapView;
+	private MapController mc;
+	private GeoPoint myPoint = null;
+	private Spinner daySpinner, hourSpinner, halfSpinner, minuteSpinner;
+	private Button saveButton;
+	private int cleaningDay = -1;
+	private int cleaningHour = -1;
+	private int cleaningMinute = -1;
+	private int cleaningHalf = 1;
+	private int intLng, intLat;
 	private GeocodeTask geotask;
 	private String address;
-	protected GregorianCalendar cal;
-	protected PrefsEditor prefs;
+	private GregorianCalendar cal;
+	private PrefsEditor prefs;
 
 	
     /** Called when the activity is first created. */
@@ -211,7 +211,7 @@ public class WheresmycarActivity extends MapActivity {
 		return false;
 	}
 
-	protected void getNextCleaningTime() {
+	private void getNextCleaningTime() {
 		if (saveButton.isEnabled()) {
 			//figure out time and day for next cleaning.
 			cal = new GregorianCalendar();
@@ -249,7 +249,7 @@ public class WheresmycarActivity extends MapActivity {
 	}
 	
 	//handle result from geocoding
-	protected String getStreetAddress(String xmlString) {
+	private String getStreetAddress(String xmlString) {
 		String address = "";
 		try {
 			DocumentBuilderFactory builderFactory =
@@ -377,7 +377,7 @@ public class WheresmycarActivity extends MapActivity {
 	}
 	
 	//handles selection on day spinner
-	protected class DaySpinnerSelectedListener implements OnItemSelectedListener {
+	private class DaySpinnerSelectedListener implements OnItemSelectedListener {
 		public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
 			setCleaningDay(pos +1);		
 		}
